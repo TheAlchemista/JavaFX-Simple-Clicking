@@ -1,36 +1,36 @@
 package Main;
 
-
 // JavaFX
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 // Project imports
-import MovingButton.MovingButton;
-import MovingButtonStage.MovingButtonStage;
-
+import Buttons.MovingButton;
+import Controllers.SceneController;
+import Controllers.GroupController;
+import Controllers.StageController;
 
 public class App extends Application 
 {
-    public static void main( String[] args ) {
-        Application.launch(args);
-    }
+  public static void main( String[] args ) {
+    Application.launch(args);
+  }
 
-    @Override
-    public void start(Stage stage) {
-        MovingButtonStage movingButtonStage = new MovingButtonStage();
+  @Override
+  public void start(Stage stage) {
+    StageController stageController = new StageController();
 
-        MovingButton movingButton = new MovingButton(
-            movingButtonStage.getSizeX(),
-            movingButtonStage.getSizeY()
-        );
+    MovingButton movingButton = new MovingButton(
+      stageController.getStage("mainStage").getWidth(),
+      stageController.getStage("mainStage").getHeight()
+    );
 
-        Group root = new Group(movingButton.getButton());
-        Scene scene = new Scene(root);
-        movingButtonStage.getStage().setScene(scene);
-        movingButtonStage.getStage().setTitle("Catch the button!");
-        movingButtonStage.getStage().show();
-    }
+    GroupController groupController = new GroupController();
+    groupController.addToGroup("mainGroup", movingButton.getButton());
+    SceneController sceneController = new SceneController(groupController.getGroups());
+
+    stageController.getStage("mainStage").setScene(sceneController.getScene("mainScene"));
+    stageController.getStage("mainStage").setTitle("Catch the button!");
+    stageController.getStage("mainStage").show();
+  }
 }
